@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>자바스크립트에서 쿠키 사용</title>
+  <script>
+    window.onload = pageLoad; //브라우저에서 웹 페이지가 로드될 때 pageLoad() 함수를 호출하여 실행한다.
+    function pageLoad() {
+      notShowPop = getCookieValue();  //notShopPop의 쿠키 값을 getCookieValue()를 호출하여 얻는다.
+
+      //notShopPop의 값이 true가 아니면 팝업창을 나타낸다.
+      if(notShopPop != "true") {
+        window.open("popUp.html", "pop", "width=400, height=500, history=no, resizable=no, status=no, scrollbars=yes, menubar=no");
+      }
+    }
+
+    function getCookieValue() {
+      var result = "false";
+      if(document.cookie != "") {
+        cookie = document.cookie.split(";");  //document의 cookie 속성으로 쿠키 정보를 문자열로 가져온 후 세미콜론(:)으로 분리해 각각의 쿠키를 얻는다.
+        for(var i=0;i<cookie.length;i++) {
+          element=cookie[i].split("=");
+          value=element[0];
+          value=value.replace(/^\s*/,'');   //정규식을 이용해 쿠키 이름 문자열의 공백(\s)을 제거한다.
+
+          //쿠키 이름이 notShopPop이면 해당하는 쿠키 값을 가져와 반환한다.
+          if(value=="notShopPop") {
+            result=element[1];
+          }
+        }
+      }
+      return result;
+    }
+
+    //"쿠키삭제" 클릭 시 호출된다. notShopPop 쿠키 값을 false로 설정한다.
+    function deleteCookie() {
+      document.cookie = "notShopPop=" + "false" + ";path=/; expires=-1";
+    }
+  </script>
+</head>
+<body>
+<form>
+  <input type="button" value="쿠키삭제" onclick="deleteCookie()"/>
+</form>
+</body>
+</html>
